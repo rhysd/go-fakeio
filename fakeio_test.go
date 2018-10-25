@@ -170,3 +170,67 @@ func TestFakeNotSetButGetResult(t *testing.T) {
 		t.Fatal("Unexpected error:", err)
 	}
 }
+
+func TestDo(t *testing.T) {
+	have, err := Stdin("hello\n").Stderr().Stdout().Do(func() {
+		fmt.Fprintln(os.Stderr, "bar!")
+		fmt.Println("foo!")
+		in, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		if err != nil {
+			t.Fatal(err)
+		}
+		if in != "hello\n" {
+			t.Errorf("want: 'hello\\n' but have '%#v'", in)
+		}
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	want := "bar!\nfoo!\n"
+	if have != want {
+		t.Fatalf("want '%#v' but have '%#v'", want, have)
+	}
+}
+
+func TestDoResture(t *testing.T) {
+	stdin, stderr, stdout := os.Stdin, os.Stderr, os.Stdout
+
+	if _, err := Stdin("hello\n").Stderr().Stdout().Do(func() {}); err != nil {
+		t.Fatal(err)
+	}
+
+	if os.Stdin != stdin {
+		t.Error("stdin was not restured")
+	}
+	if os.Stderr != stderr {
+		t.Error("stderr was not restured")
+	}
+	if os.Stdout != stdout {
+		t.Error("stdout was not restured")
+	}
+}
+
+func TestDoRestureOnPanic(t *testing.T) {
+	stdin, stderr, stdout := os.Stdin, os.Stderr, os.Stdout
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("Did not panic")
+		}
+
+		if os.Stdin != stdin {
+			t.Error("stdin was not restured")
+		}
+		if os.Stderr != stderr {
+			t.Error("stderr was not restured")
+		}
+		if os.Stdout != stdout {
+			t.Error("stdout was not restured")
+		}
+	}()
+
+	Stdin("hello\n").Stderr().Stdout().Do(func() {
+		panic("oops!!")
+	})
+}
