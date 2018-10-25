@@ -1,5 +1,6 @@
 `fakeio` pacakge for Go
 =======================
+[![Build Status](https://travis-ci.org/rhysd/fakeio.svg?branch=master)](https://travis-ci.org/rhysd/fakeio)
 
 `fakeio` is a small library to fake stdout/stderr/stdin.
 This is mainly for unit testing of CLI applications.
