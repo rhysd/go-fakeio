@@ -2,8 +2,9 @@
 =======================
 [![Linux/macOS Build Status](https://travis-ci.org/rhysd/fakeio.svg?branch=master)](https://travis-ci.org/rhysd/fakeio)
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/5b9t6932m5dt2e23/branch/master?svg=true)](https://ci.appveyor.com/project/rhysd/fakeio/branch/master)
+[![Documentation](https://godoc.org/github.com/rhysd/fakeio?status.svg)](http://godoc.org/github.com/rhysd/fakeio)
 
-`fakeio` is a small library to fake stdout/stderr/stdin.
+[`fakeio`](https://godoc.org/github.com/rhysd/fakeio) is a small library to fake stdout/stderr/stdin.
 This is mainly for unit testing of CLI applications.
 
 ## Usage
@@ -111,6 +112,9 @@ fmt.Println(s)
 
 Please see [examples](example/example_test.go) for actual examples.
 
+## Repository
+
+https://github.com/rhysd/fakeio
 
 ## License
 
