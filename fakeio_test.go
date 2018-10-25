@@ -83,6 +83,7 @@ func TestFakeAll(t *testing.T) {
 		func() *fakedIO { return Stderr().Stdin("hello\n").Stdout() },
 		func() *fakedIO { return Stdin("hello\n").Stdout().Stderr() },
 		func() *fakedIO { return Stdin("hello\n").Stderr().Stdout() },
+		func() *fakedIO { return StdinBytes([]byte("hello\n")).Stderr().Stdout() },
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			fake := f()
