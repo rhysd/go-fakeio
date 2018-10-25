@@ -24,6 +24,9 @@ func TestFakeStdout(t *testing.T) {
 	if s != "Hello" {
 		t.Fatalf("want 'Hello' but have '%s'", s)
 	}
+	if f.Err() != nil {
+		t.Fatal(f.Err())
+	}
 }
 
 func TestFakeStderr(t *testing.T) {
@@ -39,6 +42,9 @@ func TestFakeStderr(t *testing.T) {
 	}
 	if s != "Bye" {
 		t.Fatalf("want 'Bye' but have '%s'", s)
+	}
+	if f.Err() != nil {
+		t.Fatal(f.Err())
 	}
 }
 
@@ -63,6 +69,9 @@ func TestFakeStdin(t *testing.T) {
 	}
 	if !reflect.DeepEqual(have, want) {
 		t.Fatalf("want: '%#v' but have '%#v'", want, have)
+	}
+	if f.Err() != nil {
+		t.Fatal(f.Err())
 	}
 }
 
@@ -104,13 +113,13 @@ func TestRestore(t *testing.T) {
 	f := Stdout().Stderr().Stdin("hello")
 	f.Restore()
 	if os.Stdin != stdin {
-		t.Error("stdin was not restured")
+		t.Error("stdin was not restored")
 	}
 	if os.Stderr != stderr {
-		t.Error("stderr was not restured")
+		t.Error("stderr was not restored")
 	}
 	if os.Stdout != stdout {
-		t.Error("stdout was not restured")
+		t.Error("stdout was not restored")
 	}
 }
 
@@ -193,7 +202,7 @@ func TestDo(t *testing.T) {
 	}
 }
 
-func TestDoResture(t *testing.T) {
+func TestDoRestore(t *testing.T) {
 	stdin, stderr, stdout := os.Stdin, os.Stderr, os.Stdout
 
 	if _, err := Stdin("hello\n").Stderr().Stdout().Do(func() {}); err != nil {
@@ -201,17 +210,17 @@ func TestDoResture(t *testing.T) {
 	}
 
 	if os.Stdin != stdin {
-		t.Error("stdin was not restured")
+		t.Error("stdin was not restored")
 	}
 	if os.Stderr != stderr {
-		t.Error("stderr was not restured")
+		t.Error("stderr was not restored")
 	}
 	if os.Stdout != stdout {
-		t.Error("stdout was not restured")
+		t.Error("stdout was not restored")
 	}
 }
 
-func TestDoRestureOnPanic(t *testing.T) {
+func TestDoRestoreOnPanic(t *testing.T) {
 	stdin, stderr, stdout := os.Stdin, os.Stderr, os.Stdout
 
 	defer func() {
@@ -220,13 +229,13 @@ func TestDoRestureOnPanic(t *testing.T) {
 		}
 
 		if os.Stdin != stdin {
-			t.Error("stdin was not restured")
+			t.Error("stdin was not restored")
 		}
 		if os.Stderr != stderr {
-			t.Error("stderr was not restured")
+			t.Error("stderr was not restored")
 		}
 		if os.Stdout != stdout {
-			t.Error("stdout was not restured")
+			t.Error("stdout was not restored")
 		}
 	}()
 
