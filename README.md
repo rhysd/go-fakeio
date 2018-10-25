@@ -12,21 +12,25 @@ This is mainly for unit testing of CLI applications.
 Basic usage:
 
 ```go
-import "github.com/rhysd/fakeio"
+import (
+    "bufio"
+    "github.com/rhysd/fakeio"
+)
 
 // Fake stdout and input 'hello' to stdin
-fake := fakeio.Stdout().Stdin("hello")
+fake := fakeio.Stdout().Stdin("hello!")
 defer fake.Restore()
 
 // Do something...
 
-// Get bufferred stdout as string
-s, err := fake.String()
-if err != nil {
-    panic(err)
-}
+// "hello!" is stored to variable `i`
+i, err := bufio.NewReader(os.Stdin).ReadString('!')
 
-fmt.Println(s)
+// At this point, this line outputs nothing
+fmt.Print("bye")
+
+// "bye" is stored to variable `o`
+o, err := fake.String()
 ```
 
 ### Faking stdout/stderr/stdin
