@@ -3,7 +3,7 @@ package fakeioexample
 import (
 	"bufio"
 	"fmt"
-	"github.com/rhysd/fakeio"
+	"github.com/rhysd/go-fakeio"
 	"os"
 )
 

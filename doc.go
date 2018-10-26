@@ -2,10 +2,6 @@
 Package fakeio is a small library to fake stdout/stderr/stdin mainly for
 unit testing.
 
-To import this library:
-
-    import "github.com/rhysd/fakeio"
-
 Following example fakes stdout/stderr/stdin. Set 'from stdin!' as stdin and get
 output from both stdout and stderr as string.
 
@@ -38,5 +34,7 @@ output from both stdout and stderr as string.
     fmt.Println(fromOutput)
 
 Please read example/example_test.go to see live examples.
+
+If you find some bugs, please report it to repository page: https://github.com/rhysd/go-fakeio
 */
 package fakeio

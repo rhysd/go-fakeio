@@ -1,10 +1,10 @@
 `fakeio` pacakge for Go
 =======================
-[![Linux/macOS Build Status](https://travis-ci.org/rhysd/fakeio.svg?branch=master)](https://travis-ci.org/rhysd/fakeio)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/5b9t6932m5dt2e23/branch/master?svg=true)](https://ci.appveyor.com/project/rhysd/fakeio/branch/master)
-[![Documentation](https://godoc.org/github.com/rhysd/fakeio?status.svg)](http://godoc.org/github.com/rhysd/fakeio)
+[![Linux/macOS Build Status](https://travis-ci.org/rhysd/go-fakeio.svg?branch=master)](https://travis-ci.org/rhysd/go-fakeio)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/5b9t6932m5dt2e23/branch/master?svg=true)](https://ci.appveyor.com/project/rhysd/go-fakeio/branch/master)
+[![Documentation](https://godoc.org/github.com/rhysd/go-fakeio?status.svg)](http://godoc.org/github.com/rhysd/go-fakeio)
 
-[`fakeio`](https://godoc.org/github.com/rhysd/fakeio) is a small library to fake stdout/stderr/stdin.
+[`fakeio`](https://godoc.org/github.com/rhysd/go-fakeio) is a small library to fake stdout/stderr/stdin.
 This is mainly for unit testing of CLI applications.
 
 ## Usage
@@ -14,7 +14,7 @@ Basic usage:
 ```go
 import (
     "bufio"
-    "github.com/rhysd/fakeio"
+    "github.com/rhysd/go-fakeio"
 )
 
 // Fake stdout and input 'hello' to stdin
@@ -118,7 +118,7 @@ Please see [examples](example/example_test.go) for actual examples.
 
 ## Repository
 
-https://github.com/rhysd/fakeio
+https://github.com/rhysd/go-fakeio
 
 ## License
 
