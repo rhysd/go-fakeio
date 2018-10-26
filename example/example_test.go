@@ -1,4 +1,4 @@
-package fakeio_example
+package fakeioexample
 
 import (
 	"bufio"

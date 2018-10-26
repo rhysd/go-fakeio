@@ -77,14 +77,14 @@ func TestFakeStdin(t *testing.T) {
 }
 
 func TestFakeAll(t *testing.T) {
-	for i, f := range []func() *fakedIO{
-		func() *fakedIO { return Stdout().Stderr().Stdin("hello\n") },
-		func() *fakedIO { return Stdout().Stdin("hello\n").Stderr() },
-		func() *fakedIO { return Stderr().Stdout().Stdin("hello\n") },
-		func() *fakedIO { return Stderr().Stdin("hello\n").Stdout() },
-		func() *fakedIO { return Stdin("hello\n").Stdout().Stderr() },
-		func() *fakedIO { return Stdin("hello\n").Stderr().Stdout() },
-		func() *fakedIO { return StdinBytes([]byte("hello\n")).Stderr().Stdout() },
+	for i, f := range []func() *FakedIO{
+		func() *FakedIO { return Stdout().Stderr().Stdin("hello\n") },
+		func() *FakedIO { return Stdout().Stdin("hello\n").Stderr() },
+		func() *FakedIO { return Stderr().Stdout().Stdin("hello\n") },
+		func() *FakedIO { return Stderr().Stdin("hello\n").Stdout() },
+		func() *FakedIO { return Stdin("hello\n").Stdout().Stderr() },
+		func() *FakedIO { return Stdin("hello\n").Stderr().Stdout() },
+		func() *FakedIO { return StdinBytes([]byte("hello\n")).Stderr().Stdout() },
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			fake := f()

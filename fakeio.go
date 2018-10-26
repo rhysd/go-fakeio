@@ -7,7 +7,9 @@ import (
 	"os"
 )
 
-type fakedIO struct {
+// FakedIO represents state of faking stdout/stderr/stdin.
+// Restore() must be called finally to restore the state.
+type FakedIO struct {
 	stdout      *os.File
 	stderr      *os.File
 	outWriter   *os.File
@@ -18,7 +20,7 @@ type fakedIO struct {
 	err         error
 }
 
-func (fake *fakedIO) fakeOutput(name string, out *os.File) *os.File {
+func (fake *FakedIO) fakeOutput(name string, out *os.File) *os.File {
 	if fake.err != nil {
 		return out
 	}
@@ -36,7 +38,7 @@ func (fake *fakedIO) fakeOutput(name string, out *os.File) *os.File {
 }
 
 // Stdout replace stdout with faked output buffer
-func (fake *fakedIO) Stdout() *fakedIO {
+func (fake *FakedIO) Stdout() *FakedIO {
 	if fake.stdout == nil {
 		fake.stdout = os.Stdout
 		os.Stdout = fake.fakeOutput("stdout", os.Stdout)
@@ -45,7 +47,7 @@ func (fake *fakedIO) Stdout() *fakedIO {
 }
 
 // Stderr replace stderr with faked output buffer
-func (fake *fakedIO) Stderr() *fakedIO {
+func (fake *FakedIO) Stderr() *FakedIO {
 	if fake.stderr == nil {
 		fake.stderr = os.Stderr
 		os.Stderr = fake.fakeOutput("stderr", os.Stderr)
@@ -53,14 +55,14 @@ func (fake *fakedIO) Stderr() *fakedIO {
 	return fake
 }
 
-func (fake *fakedIO) writeToStdin(in []byte) {
+func (fake *FakedIO) writeToStdin(in []byte) {
 	if _, err := fake.stdinWriter.Write(in); err != nil {
 		fake.err = fmt.Errorf("Cannot write to piped stdin: %s", err)
 	}
 }
 
 // StdinBytes sets input buffer for stdin with bytes
-func (fake *fakedIO) StdinBytes(in []byte) *fakedIO {
+func (fake *FakedIO) StdinBytes(in []byte) *FakedIO {
 	if fake.err != nil {
 		return fake
 	}
@@ -84,12 +86,12 @@ func (fake *fakedIO) StdinBytes(in []byte) *fakedIO {
 }
 
 // Stdin sets given string as faked input for stdin
-func (fake *fakedIO) Stdin(in string) *fakedIO {
+func (fake *FakedIO) Stdin(in string) *FakedIO {
 	return fake.StdinBytes([]byte(in))
 }
 
 // Restore restores faked stdin/stdout/stderr. This must be called finally.
-func (fake *fakedIO) Restore() {
+func (fake *FakedIO) Restore() {
 	if fake.outReader != nil {
 		fake.outReader.Close()
 		fake.outWriter.Close()
@@ -112,14 +114,14 @@ func (fake *fakedIO) Restore() {
 }
 
 // Do runs predicate f and returns output as string
-func (fake *fakedIO) Do(f func()) (string, error) {
+func (fake *FakedIO) Do(f func()) (string, error) {
 	defer fake.Restore()
 	f()
 	return fake.String()
 }
 
 // Read reads bytes from buffer while faking stdout/stderr
-func (fake *fakedIO) Read(p []byte) (int, error) {
+func (fake *FakedIO) Read(p []byte) (int, error) {
 	if fake.err != nil {
 		return 0, fake.err
 	}
@@ -130,7 +132,7 @@ func (fake *fakedIO) Read(p []byte) (int, error) {
 }
 
 // Bytes returns buffer as []byte while faking stdout/stderr
-func (fake *fakedIO) Bytes() ([]byte, error) {
+func (fake *FakedIO) Bytes() ([]byte, error) {
 	if fake.err != nil {
 		return nil, fake.err
 	}
@@ -145,13 +147,13 @@ func (fake *fakedIO) Bytes() ([]byte, error) {
 }
 
 // String returns buffer as string while faking stdout/stderr
-func (fake *fakedIO) String() (string, error) {
+func (fake *FakedIO) String() (string, error) {
 	b, err := fake.Bytes()
 	return string(b), err
 }
 
 // CloseStdin closes faked stdin
-func (fake *fakedIO) CloseStdin() *fakedIO {
+func (fake *FakedIO) CloseStdin() *FakedIO {
 	if fake.err != nil {
 		return fake
 	}
@@ -164,30 +166,30 @@ func (fake *fakedIO) CloseStdin() *fakedIO {
 }
 
 // Err returns error which occurred while setting faked stdin/stdout/stderr
-func (fake *fakedIO) Err() error {
+func (fake *FakedIO) Err() error {
 	return fake.err
 }
 
 // Stdout starts to fake stdout and returns fakedIO object to restore input/output finally
-func Stdout() *fakedIO {
-	f := &fakedIO{}
+func Stdout() *FakedIO {
+	f := &FakedIO{}
 	return f.Stdout()
 }
 
 // Stderr starts to fake stderr and returns fakedIO object to restore input/output finally
-func Stderr() *fakedIO {
-	f := &fakedIO{}
+func Stderr() *FakedIO {
+	f := &FakedIO{}
 	return f.Stderr()
 }
 
 // StdinBytes sets given bytes as faked stdin input and returns fakedIO object to restore input/output finally
-func StdinBytes(in []byte) *fakedIO {
-	f := &fakedIO{}
+func StdinBytes(in []byte) *FakedIO {
+	f := &FakedIO{}
 	return f.StdinBytes(in)
 }
 
 // Stdin sets given string as faked stdin input and returns fakedIO object to restore input/output finally
-func Stdin(in string) *fakedIO {
-	f := &fakedIO{}
+func Stdin(in string) *FakedIO {
+	f := &FakedIO{}
 	return f.Stdin(in)
 }
