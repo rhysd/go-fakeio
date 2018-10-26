@@ -150,6 +150,19 @@ func (fake *fakedIO) String() (string, error) {
 	return string(b), err
 }
 
+// CloseStdin closes faked stdin
+func (fake *fakedIO) CloseStdin() *fakedIO {
+	if fake.err != nil {
+		return fake
+	}
+	if fake.stdinWriter == nil {
+		fake.err = errors.New("Cannot close stdin before faking it")
+		return fake
+	}
+	fake.stdinWriter.Close()
+	return fake
+}
+
 // Err returns error which occurred while setting faked stdin/stdout/stderr
 func (fake *fakedIO) Err() error {
 	return fake.err

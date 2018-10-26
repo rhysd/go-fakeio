@@ -3,6 +3,7 @@ package fakeio
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"reflect"
 	"strconv"
@@ -243,4 +244,21 @@ func TestDoRestoreOnPanic(t *testing.T) {
 	Stdin("hello\n").Stderr().Stdout().Do(func() {
 		panic("oops!!")
 	})
+}
+
+func TestCloseStdin(t *testing.T) {
+	want := "hello"
+	fake := Stdin(want).CloseStdin()
+	defer fake.Restore()
+
+	// When stdin is not closed, this line blocks forever
+	b, err := ioutil.ReadAll(os.Stdin)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	have := string(b)
+	if want != have {
+		t.Fatalf("want '%#v' but have '%#v'", want, have)
+	}
 }
