@@ -12,8 +12,17 @@ import (
 )
 
 func TestFakeStdout(t *testing.T) {
+	stdin, stderr := os.Stdin, os.Stderr
+
 	f := Stdout()
 	defer f.Restore()
+
+	if os.Stdin != stdin {
+		t.Error("stdin was unexpectedly modified", os.Stdin)
+	}
+	if os.Stderr != stderr {
+		t.Error("stderr was unexpectedly modified", os.Stderr)
+	}
 
 	fmt.Print("Hello")
 	fmt.Fprint(os.Stderr, "Bye")
@@ -31,8 +40,17 @@ func TestFakeStdout(t *testing.T) {
 }
 
 func TestFakeStderr(t *testing.T) {
+	stdin, stdout := os.Stdin, os.Stdout
+
 	f := Stderr()
 	defer f.Restore()
+
+	if os.Stdin != stdin {
+		t.Error("stdin was unexpectedly modified", os.Stdin)
+	}
+	if os.Stdout != stdout {
+		t.Error("stdout was unexpectedly modified", os.Stdout)
+	}
 
 	fmt.Print("Hello")
 	fmt.Fprint(os.Stderr, "Bye")
@@ -50,8 +68,17 @@ func TestFakeStderr(t *testing.T) {
 }
 
 func TestFakeStdin(t *testing.T) {
+	stderr, stdout := os.Stderr, os.Stdout
+
 	f := Stdin("hello!\n").Stdin("how are you?\n").Stdin("bye!\n")
 	defer f.Restore()
+
+	if os.Stdout != stdout {
+		t.Error("stdout was unexpectedly modified", os.Stdout)
+	}
+	if os.Stderr != stderr {
+		t.Error("stderr was unexpectedly modified", os.Stderr)
+	}
 
 	r := bufio.NewReader(os.Stdin)
 	have := make([]string, 0, 3)
@@ -260,5 +287,20 @@ func TestCloseStdin(t *testing.T) {
 	have := string(b)
 	if want != have {
 		t.Fatalf("want '%#v' but have '%#v'", want, have)
+	}
+}
+
+func TestRestoreNothing(t *testing.T) {
+	stdin, stderr, stdout := os.Stdin, os.Stderr, os.Stdout
+	f := &FakedIO{}
+	f.Restore()
+	if os.Stdin != stdin {
+		t.Error("stdin was modified", os.Stdin)
+	}
+	if os.Stderr != stderr {
+		t.Error("stderr was modified", os.Stderr)
+	}
+	if os.Stdout != stdout {
+		t.Error("stdout was modified", os.Stdout)
 	}
 }
