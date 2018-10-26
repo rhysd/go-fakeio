@@ -4,8 +4,9 @@
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/5b9t6932m5dt2e23/branch/master?svg=true)](https://ci.appveyor.com/project/rhysd/go-fakeio/branch/master)
 [![Documentation](https://godoc.org/github.com/rhysd/go-fakeio?status.svg)](http://godoc.org/github.com/rhysd/go-fakeio)
 
-[`fakeio`](https://godoc.org/github.com/rhysd/go-fakeio) is a small library to fake stdout/stderr/stdin.
-This is mainly for unit testing of CLI applications.
+[`fakeio`](https://github.com/rhysd/go-fakeio) is a small library to fake stdout/stderr/stdin.
+This is mainly for unit testing of CLI applications. Please see [documentation](https://godoc.org/github.com/rhysd/go-fakeio)
+for more details.
 
 ## Usage
 
