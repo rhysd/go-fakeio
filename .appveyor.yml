@@ -1,6 +1,6 @@
 version: "{build}"
 clone_depth: 1
-clone_folder: c:\gopath\src\github.com\rhysd\dot-github
+clone_folder: c:\gopath\src\github.com\rhysd\go-fakeio
 environment:
     GOPATH: c:\gopath
 install:
