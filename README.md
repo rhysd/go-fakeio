@@ -8,6 +8,12 @@
 This is mainly for unit testing of CLI applications. Please see [documentation](https://godoc.org/github.com/rhysd/go-fakeio)
 for more details.
 
+## Installation
+
+```
+$ go get github.com/rhysd/go-fakeio
+```
+
 ## Usage
 
 Basic usage:
