@@ -94,10 +94,13 @@ func (fake *FakedIO) Stdin(in string) *FakedIO {
 func (fake *FakedIO) Restore() {
 	if fake.outReader != nil {
 		fake.outReader.Close()
+		fake.outReader = nil
 		fake.outWriter.Close()
+		fake.outWriter = nil
 	}
 	if fake.stdinWriter != nil {
 		fake.stdinWriter.Close()
+		fake.stdinWriter = nil
 	}
 	if fake.stdout != nil {
 		os.Stdout = fake.stdout
