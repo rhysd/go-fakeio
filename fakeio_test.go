@@ -150,6 +150,10 @@ func TestRestore(t *testing.T) {
 	if os.Stdout != stdout {
 		t.Error("stdout was not restored")
 	}
+	// Caling Restore multple times is ok
+	f.Restore()
+	f.Restore()
+	f.Restore()
 }
 
 func TestRepeatStdout(t *testing.T) {
