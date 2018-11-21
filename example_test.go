@@ -1,4 +1,4 @@
-package fakeioexample
+package fakeio_test
 
 import (
 	"bufio"
@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func Example_FakeStdout() {
+func ExampleStdout() {
 	f := fakeio.Stdout()
 
 	fmt.Print("Hello")
@@ -27,7 +27,7 @@ func Example_FakeStdout() {
 	// Hello
 }
 
-func Example_FakeStderr() {
+func ExampleStderr() {
 	f := fakeio.Stderr()
 
 	fmt.Fprint(os.Stderr, "Hello")
@@ -47,7 +47,7 @@ func Example_FakeStderr() {
 	// Hello
 }
 
-func Example_FakeStdin() {
+func ExampleStdin() {
 	f := fakeio.Stdin("Bye!")
 
 	s, err := bufio.NewReader(os.Stdin).ReadString('!')
@@ -65,7 +65,7 @@ func Example_FakeStdin() {
 	// Bye!
 }
 
-func Example_FakeAll() {
+func Example() {
 	f := fakeio.Stdout().Stderr().Stdin("from stdin!")
 
 	fromInput, err := bufio.NewReader(os.Stdin).ReadString('!')
