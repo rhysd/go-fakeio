@@ -121,7 +121,7 @@ fmt.Println(s)
 
 ### Examples
 
-Please see [examples](example/example_test.go) for actual examples.
+Please see [examples](example_test.go) for actual examples.
 
 ## Repository
 
